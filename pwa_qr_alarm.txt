@@ -1,0 +1,64 @@
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import QrScanner from "qr-scanner";
+
+export default function App() {
+  const [timeLeft, setTimeLeft] = useState(null);
+  const [timerActive, setTimerActive] = useState(false);
+  const [scanner, setScanner] = useState(null);
+
+  useEffect(() => {
+    let timer;
+    if (timerActive && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      alert("Tid for å sjekke lyset!");
+      setTimerActive(false);
+    }
+    return () => clearInterval(timer);
+  }, [timerActive, timeLeft]);
+
+  const startTimer = (minutes) => {
+    setTimeLeft(minutes * 60);
+    setTimerActive(true);
+  };
+
+  const stopTimer = () => {
+    setTimerActive(false);
+    setTimeLeft(null);
+  };
+
+  const startQrScanner = () => {
+    const videoElem = document.createElement("video");
+    document.body.appendChild(videoElem);
+    const qrScanner = new QrScanner(videoElem, (result) => {
+      alert(`QR-kode funnet: ${result}`);
+      qrScanner.stop();
+      document.body.removeChild(videoElem);
+    });
+    qrScanner.start();
+    setScanner(qrScanner);
+  };
+
+  return (
+    <div className="flex flex-col items-center p-4 space-y-4">
+      <h1 className="text-2xl font-bold">BeCandle App</h1>
+
+      <div className="flex flex-col items-center space-y-2">
+        <Button onClick={() => startTimer(30)}>Start 30-min påminnelse</Button>
+        {timerActive && (
+          <div className="mt-2 text-lg">
+            Tid igjen: {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+          </div>
+        )}
+        {timerActive && <Button onClick={stopTimer}>Avbryt påminnelse</Button>}
+      </div>
+
+      <div className="flex flex-col items-center space-y-2">
+        <Button onClick={startQrScanner}>Skann QR-kode</Button>
+      </div>
+    </div>
+  );
+}
