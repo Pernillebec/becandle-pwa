@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeCandle Sikkerhetsapp</title>
+    <link rel="manifest" href="manifest.json">
+    <script defer src="app.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        button { padding: 10px 20px; font-size: 18px; cursor: pointer; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>BeCandle Sikkerhetsapp 🔥</h1>
+    <p>Skann QR-kode for å sette en påminnelse om å sjekke lyset.</p>
+    
+    <button onclick="scanQRCode()">📷 Skann QR-kode</button>
+    <button onclick="setReminder(30)">⏳ Påminnelse om 30 min</button>
+    <button onclick="setReminder(60)">⏳ Påminnelse om 1 time</button>
+
+    <p><a href="https://din-nettside.no" target="_blank">Besøk BeCandle</a></p>
+</body>
+</html>
